@@ -7,9 +7,10 @@
       pkgs = nixpkgs.legacyPackages.${system};
       stdenv = pkgs.stdenv;
       playdate-sdk-pkg = playdate-sdk.packages.${system}.default;
+      game-name = "hello_world.pdx";
   in
   {
-    devShells.${system}.default = with stdenv; pkgs.mkShell {
+    devShells.${system}.default = pkgs.mkShell {
       packages = [playdate-sdk-pkg];
       shellHook = ''
       export PLAYDATE_SDK_PATH=`pwd`/.PlaydateSDK
@@ -17,7 +18,7 @@
     };
     packages.${system} = {
       default = self.packages.${system}.playdate-example;
-      playdate-example = with stdenv; mkDerivation rec {
+      playdate-example = with stdenv; mkDerivation {
         pname = "playdate-example";
         version = "1.0.0";
         src = with pkgs.lib.fileset; toSource {
@@ -28,7 +29,7 @@
             ./Source
           ];
         };
-        outName = "hello_world.pdx";
+        outName = game-name;
         nativeBuildInputs = [playdate-sdk-pkg pkgs.gcc-arm-embedded pkgs.cmake];
         buildInputs = [ playdate-sdk-pkg ];
         cmakeFlags = ["-DPLAYDATE_SDK_PATH=`pwd`/.PlaydateSDK"];
@@ -47,11 +48,11 @@
           mkdir $out/bin
           cat > $out/bin/${self.packages.${system}.default.pname} <<EOL
             #!/usr/bin/env bash
-            ${playdate-sdk-pkg}/bin/PlaydateSimulator $out/hello_world.pdx
+            ${playdate-sdk-pkg}/bin/PlaydateSimulator $out/${game-name}
           EOL
           chmod 555 $out/bin/${self.packages.${system}.default.pname}
           cd $out
-          zip -r playdat-example.pdx.zip playdate-example.pdx
+          ${pkgs.zip}/bin/zip -r ${game-name}.zip ${game-name}
           runHook postInstall
         '';
       };
