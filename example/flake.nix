@@ -47,8 +47,8 @@
           cp -r . $out
           mkdir $out/bin
           cat > $out/bin/${self.packages.${system}.default.pname} <<EOL
-            #!/usr/bin/env bash
-            ${playdate-sdk-pkg}/bin/PlaydateSimulator $out/${game-name}
+          #!/usr/bin/env bash
+          ${playdate-sdk-pkg}/bin/PlaydateSimulator $out/${game-name}
           EOL
           chmod 555 $out/bin/${self.packages.${system}.default.pname}
           cd $out
