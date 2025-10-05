@@ -18,7 +18,7 @@
     cairo
     gdk-pixbuf
     glib
-    webkitgtk
+    webkitgtk_4_1
     xorg.libX11
     stdenv.cc.cc.lib
     libxkbcommon
@@ -35,10 +35,10 @@
 in
   stdenv.mkDerivation rec {
     pname = "playdate-sdk";
-    version = "2.7.6";
+    version = "3.0.0";
     src = pkgs.fetchurl {
       url = "https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-${version}.tar.gz";
-      sha256 = "sha256-PjirdoWe4oC73lWusekV4RJTnUHrRxzQPMz3DdQ9e0Y=";
+      sha256 = "sha256-1VDoFt9hsc/bT9ZAzliTUioY5BEr+18Dut0P6FzF5+0=";
     };
 
     buildInputs = pdcInputs;
